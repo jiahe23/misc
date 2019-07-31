@@ -25,35 +25,27 @@ def main():
 
     ax[0,0].plot(s_prof.variables['ql_mean'][-1,:], z_half, 'k', lw=2)
     ax[0,0].set_title('<ql>')
-    ax[0,0].set_ylim([0, max(z_half.max(),z_full.max())])
 
     ax[0,1].plot(s_prof.variables['qt_mean'][-1,:], z_half, 'k', lw=2)
     ax[0,1].set_title('<qt>')
-    ax[0,1].set_ylim([0, max(z_half.max(),z_full.max())])
 
     ax[0,2].plot(s_prof.variables['thetali_mean'][-1,:], z_half, 'k', lw=2)
     ax[0,2].set_title('<thetali>')
-    ax[0,2].set_ylim([0, max(z_half.max(),z_full.max())])
 
     ax[0,3].plot(s_prof.variables['tke_mean'][-1,:], z_half, 'k', lw=2)
     ax[0,3].set_title('<tke>')
-    ax[0,3].set_ylim([0, max(z_half.max(),z_full.max())])
 
     ax[1,0].plot(s_prof.variables['updraft_fraction'][-1,:], z_half, 'k', lw=2)
     ax[1,0].set_title('a_upd')
-    ax[1,0].set_ylim([0, max(z_half.max(),z_full.max())])
 
     ax[1,1].plot(s_prof.variables['updraft_w'][-1,:], z_half, 'k', lw=2)
     ax[1,1].set_title('w_upd')
-    ax[1,1].set_ylim([0, max(z_half.max(),z_full.max())])
 
-    ax[1,2].plot(s_prof.variables['updraft_b'][-1,:], z_half, 'k', lw=2)
+    ax[1,2].plot(s_prof.variables['updraft_b'][-1,:]-s_prof.variables['buoyancy_mean'][-1,:]*(s_prof.variables['updraft_fraction'][-1,:]!=0), z_half, 'k', lw=2)
     ax[1,2].set_title('b_upd')
-    ax[1,2].set_ylim([0, max(z_half.max(),z_full.max())])
 
     ax[1,3].plot(s_prof.variables['updraft_ql'][-1,:], z_half, 'k', lw=2)
     ax[1,3].set_title('ql_upd')
-    ax[1,3].set_ylim([0, max(z_half.max(),z_full.max())])
 
     plt.savefig(path+'/Visualization/sanitycheck_laststep.pdf')
     plt.close('all')
@@ -61,23 +53,28 @@ def main():
     # time series
     fig, ax = plt.subplots(2,3, figsize=(24,16))
 
-    C = ax[0,0].contourf(t,z_half,s_prof.variables['updraft_fraction'])
+    tdata = s_prof.variables['updraft_fraction'][:].data.transpose()
+    C = ax[0,0].contourf(t,z_half, tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
     plt.colorbar(C,ax=ax[0,0])
     ax[0,0].set_title('a_upd')
 
-    C = ax[0,1].contourf(t,z_half,s_prof.variables['updraft_w'])
+    tdata = s_prof.variables['updraft_w'][:].data.transpose()
+    C = ax[0,1].contourf(t,z_half, tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
     plt.colorbar(C,ax=ax[0,1])
     ax[0,1].set_title('w_upd')
 
-    C = ax[0,2].contourf(t,z_half,s_prof.variables['updraft_ql'])
+    tdata = s_prof.variables['updraft_ql'][:].data.transpose()
+    C = ax[0,2].contourf(t,z_half, tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
     plt.colorbar(C,ax=ax[0,2])
     ax[0,2].set_title('ql_upd')
 
-    C = ax[1,0].contourf(t,z_half,s_prof.variables['updraft_b'])
+    tdata = (s_prof.variables['updraft_b'][:].data-s_prof.variables['buoyancy_mean'][:].data*(s_prof.variables['updraft_fraction'][:].data!=0)).transpose()
+    C = ax[1,0].contourf(t,z_half, tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
     plt.colorbar(C,ax=ax[1,0])
     ax[1,0].set_title('b_upd')
 
-    C = ax[1,1].contourf(t,z_half,s_prof.variables['updraft_dyn_pressure'])
+    tdata = s_prof.variables['updraft_dyn_pressure'][:].data.transpose()
+    C = ax[1,1].contourf(t,z_half, tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
     plt.colorbar(C,ax=ax[1,1])
     ax[1,1].set_title('p_upd')
 
