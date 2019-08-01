@@ -85,7 +85,10 @@ def main():
     plt.colorbar(C,ax=ax[1,0])
     ax[1,0].set_title('b_upd')
 
-    tdata = s_prof.variables['nh_pressure_tan'][:].data.transpose()
+    try:
+        tdata = s_prof.variables['nh_pressure'][:].data.transpose()
+    except:
+        tdata = s_prof.variables['nh_pressure_tan'][:].data.transpose()
     C = ax[1,1].contourf(t,z_half, tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
     plt.colorbar(C,ax=ax[1,1])
     ax[1,1].set_title('-dpdz_upd')
