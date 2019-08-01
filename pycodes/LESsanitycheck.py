@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import argparse
 
+sns.set()
+
 def main():
     # get exp name from input
     parser = argparse.ArgumentParser(prog='pycles')
