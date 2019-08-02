@@ -1,5 +1,6 @@
 import numpy as np
 import netCDF4 as nc
+import os
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -14,6 +15,10 @@ def main():
     args = parser.parse_args()
 
     path = '/export/data1/jiahe/LESdata/'+args.expname
+
+    if not os.path.exists(path+'/Visualization/'):
+        os.mkdir(path+'/Visualization/')
+
     stat = nc.Dataset(path+'/stats/Stats.'+args.expname.split('.')[1]+'.nc')
 
     z_half = stat.groups['reference'].variables['z'][:].data
