@@ -1,6 +1,5 @@
 import numpy as np
 import netCDF4 as nc
-# import os.path
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -24,6 +23,7 @@ def main():
 
     if not os.path.exists(path+'/Visualization/'):
         os.mkdir(path+'/Visualization/')
+        
     stat = nc.Dataset(path+'/stats/Stats.'+args.expname.split('.')[1]+'.nc')
 
     z_half = stat.groups['reference'].variables['z_half'][:].data
