@@ -21,8 +21,8 @@ def main():
 
     stat = nc.Dataset(path+'/stats/Stats.'+args.expname.split('.')[1]+'.nc')
 
-    z_half = stat.groups['reference'].variables['z'][:].data
-    z_full = stat.groups['reference'].variables['z_full'][:].data
+    z_half = stat.groups['reference'].variables['z_half'][:].data
+    z_full = stat.groups['reference'].variables['z'][:].data
     t = stat.groups['timeseries'].variables['t'][:].data/3600.0
     s_prof = stat.groups['profiles']
 
