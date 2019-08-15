@@ -57,6 +57,37 @@ def main():
     plt.savefig(path+'/Visualization/sanitycheck_laststep.pdf')
     plt.close('all')
 
+    # last hour ave
+    plt.close('all')
+    fig, ax = plt.subplots(2,4, figsize=(32,16))
+
+    ax[0,0].plot(s_prof.variables['ql_mean'][-1:-11:-1,:].mean(axis=0), z_half, 'k', lw=2)
+    ax[0,0].set_title('<ql>')
+
+    ax[0,1].plot(s_prof.variables['qt_mean'][-1:-11:-1,:].mean(axis=0), z_half, 'k', lw=2)
+    ax[0,1].set_title('<qt>')
+
+    ax[0,2].plot(s_prof.variables['thetali_mean'][-1:-11:-1,:].mean(axis=0), z_half, 'k', lw=2)
+    ax[0,2].set_title('<thetali>')
+
+    ax[0,3].plot(s_prof.variables['tke_mean'][-1:-11:-1,:].mean(axis=0), z_half, 'k', lw=2)
+    ax[0,3].set_title('<tke>')
+
+    ax[1,0].plot(s_prof.variables['updraft_fraction'][-1:-11:-1,:].mean(axis=0), z_half, 'k', lw=2)
+    ax[1,0].set_title('a_upd')
+
+    ax[1,1].plot(s_prof.variables['updraft_w'][-1:-11:-1,:].mean(axis=0), z_half, 'k', lw=2)
+    ax[1,1].set_title('w_upd')
+
+    ax[1,2].plot((s_prof.variables['updraft_b'][-1:-11:-1,:]-s_prof.variables['buoyancy_mean'][-1:-11:-1,:]*(s_prof.variables['updraft_fraction'][-1:-11:-1,:]!=0)).mean(axis=0), z_half, 'k', lw=2)
+    ax[1,2].set_title('b_upd')
+
+    ax[1,3].plot(s_prof.variables['updraft_ql'][-1:-11:-1,:].mean(axis=0), z_half, 'k', lw=2)
+    ax[1,3].set_title('ql_upd')
+
+    plt.savefig(path+'/Visualization/sanitycheck_lasthourave.pdf')
+    plt.close('all')
+
     # time series
     fig, ax = plt.subplots(2,3, figsize=(24,16))
 
@@ -84,6 +115,14 @@ def main():
     C = ax[1,1].contourf(t,z_half, tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
     plt.colorbar(C,ax=ax[1,1])
     ax[1,1].set_title('p_upd')
+
+    try:
+        tdata = s_prof.variables['updraft_ddz_p_alpha'][:].data.transpose()
+        C = ax[1,2].contourf(t,z_half, -tdata, vmin=-abs(tdata).max(), vmax=abs(tdata).max(), cmap='RdBu_r')
+        plt.colorbar(C,ax=ax[1,2])
+        ax[1,2].set_title('updraft_ddz_p_alpha')
+    except:
+        print('updraft_ddz_p_alpha not output to stats file')
 
     plt.savefig(path+'/Visualization/sanitycheck_timeseries.pdf')
     plt.close('all')
