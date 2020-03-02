@@ -8,6 +8,8 @@ def main():
     parser = argparse.ArgumentParser(prog='PyCLES')
     parser.add_argument("expfolder")
     parser.add_argument("expname")
+    parser.add_argument("t1")
+    parser.add_argument("t2")
     args = parser.parse_args()
 
     lespath = '/export/data1/jiahe/LESdata/'+args.expfolder
