@@ -13,6 +13,7 @@ class lesdata:
             self.statsobj = nc.Dataset(self.datapath+'/stats/Stats.'+expname+'.nc','r')
         except:
             print 'stats data loading failure'
+            print self.datapath+'/stats/Stats.'+expname+'.nc'
             exit(0)
 
     def fields(self, tt, varname):
